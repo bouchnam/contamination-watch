@@ -1,0 +1,77 @@
+name: contamination-sweep
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"        # every 6 hours
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Audit a single model id (optional)"
+        required: false
+      demo:
+        description: "Run in demo mode (synthetic data)"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write                # commit updated data/ + site/
+  pages: write
+  id-token: write
+
+concurrency:
+  group: sweep
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest       # swap for a self-hosted GPU runner to audit >3B models fast
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install
+        run: |
+          pip install -e ".[analyst]"
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install transformers datasets accelerate
+
+      - name: Run sweep
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ "${{ inputs.demo }}" = "true" ]; then
+            contamination-watch demo
+          elif [ -n "${{ inputs.model }}" ]; then
+            contamination-watch audit "${{ inputs.model }}" --dtype bfloat16
+          else
+            contamination-watch sweep --dtype bfloat16
+          fi
+
+      - name: Commit results
+        run: |
+          git config user.name "contamination-watch[bot]"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/ site/
+          git diff --cached --quiet || git commit -m "sweep: $(date -u +%FT%TZ)"
+          git push
+
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: sweep
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

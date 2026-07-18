@@ -1,0 +1,959 @@
+{
+ "generated_at": "2026-07-17T21:21:53+00:00",
+ "models": [
+  {
+   "model_id": "demo-org/aurora-7b-instruct",
+   "audited_at": "2026-07-17T21:21:53.856649+00:00",
+   "score": 65,
+   "tier": "contaminated",
+   "verdict": "Strong membership signal detected on gsm8k, math; composite contamination score 65/100.",
+   "cells": [
+    {
+     "audit_id": 1,
+     "benchmark": "gsm8k",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.8235451198888192,
+     "p_value": 0.0026263134596596115,
+     "signal": 0.911817066296064,
+     "error": null
+    },
+    {
+     "audit_id": 1,
+     "benchmark": "gsm8k",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.818038516185762,
+     "p_value": 0.0029823853201408463,
+     "signal": 0.8934617206192066,
+     "error": null
+    },
+    {
+     "audit_id": 1,
+     "benchmark": "gsm8k",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.7658752073226434,
+     "p_value": 0.0035578995986105997,
+     "signal": 0.7195840244088112,
+     "error": null
+    },
+    {
+     "audit_id": 1,
+     "benchmark": "humaneval",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.490435482460724,
+     "p_value": 0.6716854220985855,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 1,
+     "benchmark": "humaneval",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.4404581540767316,
+     "p_value": 0.6522676040912448,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 1,
+     "benchmark": "humaneval",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.5212038269646703,
+     "p_value": 0.4055903783852648,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 1,
+     "benchmark": "math",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.7375376387916935,
+     "p_value": 0.005807832621906833,
+     "signal": 0.6251254626389785,
+     "error": null
+    },
+    {
+     "audit_id": 1,
+     "benchmark": "math",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.7644698222978559,
+     "p_value": 0.007396596095940273,
+     "signal": 0.7148994076595195,
+     "error": null
+    },
+    {
+     "audit_id": 1,
+     "benchmark": "math",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.7465731288841749,
+     "p_value": 0.011206750094280037,
+     "signal": 0.6320515970458537,
+     "error": null
+    },
+    {
+     "audit_id": 1,
+     "benchmark": "mmlu",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.5885101565273345,
+     "p_value": 0.4298734140499656,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 1,
+     "benchmark": "mmlu",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.5544848689557632,
+     "p_value": 0.20819127320019862,
+     "signal": 0.0008499318385454332,
+     "error": null
+    },
+    {
+     "audit_id": 1,
+     "benchmark": "mmlu",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.4917265634231374,
+     "p_value": 0.8543277667083067,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 1,
+     "benchmark": "truthfulqa",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.5050771012662761,
+     "p_value": 0.20854302357805457,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 1,
+     "benchmark": "truthfulqa",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.5300471307803772,
+     "p_value": 0.3376659882760066,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 1,
+     "benchmark": "truthfulqa",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.5141233178108127,
+     "p_value": 0.29205460093102054,
+     "signal": 0.0,
+     "error": null
+    }
+   ]
+  },
+  {
+   "model_id": "demo-org/basalt-8b-chat",
+   "audited_at": "2026-07-17T21:21:53.876424+00:00",
+   "score": 57,
+   "tier": "contaminated",
+   "verdict": "Strong membership signal detected on humaneval; composite contamination score 57/100.",
+   "cells": [
+    {
+     "audit_id": 3,
+     "benchmark": "gsm8k",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.5224484290479122,
+     "p_value": 0.40064044926233233,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 3,
+     "benchmark": "gsm8k",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.543727108679073,
+     "p_value": 0.23034405447203335,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 3,
+     "benchmark": "gsm8k",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.5086767186104838,
+     "p_value": 0.7253673791115409,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 3,
+     "benchmark": "humaneval",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.7809537205229917,
+     "p_value": 0.004305695600087087,
+     "signal": 0.7698457350766391,
+     "error": null
+    },
+    {
+     "audit_id": 3,
+     "benchmark": "humaneval",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.786565557498785,
+     "p_value": 0.004100647881589124,
+     "signal": 0.7885518583292833,
+     "error": null
+    },
+    {
+     "audit_id": 3,
+     "benchmark": "humaneval",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.7890654486171472,
+     "p_value": 0.0014420336441910602,
+     "signal": 0.7968848287238242,
+     "error": null
+    },
+    {
+     "audit_id": 3,
+     "benchmark": "math",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.5051898273188082,
+     "p_value": 0.7440379944606087,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 3,
+     "benchmark": "math",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.48239704050358106,
+     "p_value": 0.46911474658813157,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 3,
+     "benchmark": "math",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.5089038513071393,
+     "p_value": 0.2883744086513363,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 3,
+     "benchmark": "mmlu",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.525140989811365,
+     "p_value": 0.6211721385852144,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 3,
+     "benchmark": "mmlu",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.5297826434353842,
+     "p_value": 0.8605666215893619,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 3,
+     "benchmark": "mmlu",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.5018007465439056,
+     "p_value": 0.8365122445508972,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 3,
+     "benchmark": "truthfulqa",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.5619320350822862,
+     "p_value": 0.6883728660898106,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 3,
+     "benchmark": "truthfulqa",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.4786564358936175,
+     "p_value": 0.29043721675532197,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 3,
+     "benchmark": "truthfulqa",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.4678086734075347,
+     "p_value": 0.8193511142729175,
+     "signal": 0.0,
+     "error": null
+    }
+   ]
+  },
+  {
+   "model_id": "demo-org/quill-3b",
+   "audited_at": "2026-07-17T21:21:53.866591+00:00",
+   "score": 39,
+   "tier": "suspect",
+   "verdict": "Moderate membership signal detected on truthfulqa, mmlu; composite contamination score 39/100.",
+   "cells": [
+    {
+     "audit_id": 2,
+     "benchmark": "gsm8k",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.5315881943538513,
+     "p_value": 0.3758007725519288,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 2,
+     "benchmark": "gsm8k",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.4874610296346816,
+     "p_value": 0.6625804444548304,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 2,
+     "benchmark": "gsm8k",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.5001431058720882,
+     "p_value": 0.5860249429021931,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 2,
+     "benchmark": "humaneval",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.5181683563580682,
+     "p_value": 0.3080412028515699,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 2,
+     "benchmark": "humaneval",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.49571764192092704,
+     "p_value": 0.5380226398762001,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 2,
+     "benchmark": "humaneval",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.47229139174087237,
+     "p_value": 0.8081726856008008,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 2,
+     "benchmark": "math",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.5284317648884178,
+     "p_value": 0.4889056802627748,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 2,
+     "benchmark": "math",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.5005114248963676,
+     "p_value": 0.4780440987084388,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 2,
+     "benchmark": "math",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.542296693727343,
+     "p_value": 0.3813555436909979,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 2,
+     "benchmark": "mmlu",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.6944646225642188,
+     "p_value": 0.007756583586599213,
+     "signal": 0.4815487418807293,
+     "error": null
+    },
+    {
+     "audit_id": 2,
+     "benchmark": "mmlu",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.6384897440868206,
+     "p_value": 0.010386975884332166,
+     "signal": 0.2914866030391631,
+     "error": null
+    },
+    {
+     "audit_id": 2,
+     "benchmark": "mmlu",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.6415591442180978,
+     "p_value": 0.018496575315342465,
+     "signal": 0.24688598236675344,
+     "error": null
+    },
+    {
+     "audit_id": 2,
+     "benchmark": "truthfulqa",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.6834696641974621,
+     "p_value": 0.008560700436761859,
+     "signal": 0.44489888065820704,
+     "error": null
+    },
+    {
+     "audit_id": 2,
+     "benchmark": "truthfulqa",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.7406709937688273,
+     "p_value": 0.008783587333803198,
+     "signal": 0.6355699792294243,
+     "error": null
+    },
+    {
+     "audit_id": 2,
+     "benchmark": "truthfulqa",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.6856170231089138,
+     "p_value": 0.009962952278352118,
+     "signal": 0.4520567436963793,
+     "error": null
+    }
+   ]
+  },
+  {
+   "model_id": "demo-org/cascade-7b-v2",
+   "audited_at": "2026-07-17T21:21:53.900721+00:00",
+   "score": 33,
+   "tier": "suspect",
+   "verdict": "Moderate membership signal detected on gsm8k; composite contamination score 33/100.",
+   "cells": [
+    {
+     "audit_id": 5,
+     "benchmark": "gsm8k",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.6669102187601358,
+     "p_value": 0.009958974336207922,
+     "signal": 0.38970072920045257,
+     "error": null
+    },
+    {
+     "audit_id": 5,
+     "benchmark": "gsm8k",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.704130624926874,
+     "p_value": 0.006118244901408978,
+     "signal": 0.5137687497562464,
+     "error": null
+    },
+    {
+     "audit_id": 5,
+     "benchmark": "gsm8k",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.6941772456657194,
+     "p_value": 0.008122614437976267,
+     "signal": 0.4805908188857312,
+     "error": null
+    },
+    {
+     "audit_id": 5,
+     "benchmark": "humaneval",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.4793094756650575,
+     "p_value": 0.7767425202545618,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 5,
+     "benchmark": "humaneval",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.48738565078578644,
+     "p_value": 0.8874896391580428,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 5,
+     "benchmark": "humaneval",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.4866403479727477,
+     "p_value": 0.34409264816241936,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 5,
+     "benchmark": "math",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.5162061627161437,
+     "p_value": 0.3831122700627708,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 5,
+     "benchmark": "math",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.5873191040706689,
+     "p_value": 0.29759217141489713,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 5,
+     "benchmark": "math",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.49891802965896187,
+     "p_value": 0.26897635717613944,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 5,
+     "benchmark": "mmlu",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.49968539558137853,
+     "p_value": 0.4271278258045631,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 5,
+     "benchmark": "mmlu",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.4540853228897647,
+     "p_value": 0.7522245604087195,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 5,
+     "benchmark": "mmlu",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.495828747587417,
+     "p_value": 0.20572912607496863,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 5,
+     "benchmark": "truthfulqa",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.5176339913840506,
+     "p_value": 0.24672107594033554,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 5,
+     "benchmark": "truthfulqa",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.58480641433102,
+     "p_value": 0.737439265162706,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 5,
+     "benchmark": "truthfulqa",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.5277939544619594,
+     "p_value": 0.26741114360192053,
+     "signal": 0.0,
+     "error": null
+    }
+   ]
+  },
+  {
+   "model_id": "demo-org/lumen-1.5b",
+   "audited_at": "2026-07-17T21:21:53.886697+00:00",
+   "score": 0,
+   "tier": "clean",
+   "verdict": "No statistically significant membership signal on any audited benchmark; consistent with a clean model at current probe sensitivity.",
+   "cells": [
+    {
+     "audit_id": 4,
+     "benchmark": "gsm8k",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.48574250139248315,
+     "p_value": 0.42989486109938213,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 4,
+     "benchmark": "gsm8k",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.4894841634760472,
+     "p_value": 0.526796918623167,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 4,
+     "benchmark": "gsm8k",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.507531750099646,
+     "p_value": 0.31835302276780425,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 4,
+     "benchmark": "humaneval",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.5553985138293943,
+     "p_value": 0.44675379194576503,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 4,
+     "benchmark": "humaneval",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.4761546400010047,
+     "p_value": 0.2584897757957892,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 4,
+     "benchmark": "humaneval",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.49629779190294276,
+     "p_value": 0.7447156760294701,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 4,
+     "benchmark": "math",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.48933225640050637,
+     "p_value": 0.5606624015496865,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 4,
+     "benchmark": "math",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.49977873716237176,
+     "p_value": 0.6272504743819556,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 4,
+     "benchmark": "math",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.5256705108306508,
+     "p_value": 0.4009201059444266,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 4,
+     "benchmark": "mmlu",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.5230596505542462,
+     "p_value": 0.7633818394886532,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 4,
+     "benchmark": "mmlu",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.5440293240071079,
+     "p_value": 0.8214226865221359,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 4,
+     "benchmark": "mmlu",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.4825633703243984,
+     "p_value": 0.3375590575329941,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 4,
+     "benchmark": "truthfulqa",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.4839492439362858,
+     "p_value": 0.3588149993165326,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 4,
+     "benchmark": "truthfulqa",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.5682023752267676,
+     "p_value": 0.3639267940062888,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 4,
+     "benchmark": "truthfulqa",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.5063697219240729,
+     "p_value": 0.744711909440887,
+     "signal": 0.0,
+     "error": null
+    }
+   ]
+  },
+  {
+   "model_id": "demo-org/verity-4b-base",
+   "audited_at": "2026-07-17T21:21:53.911195+00:00",
+   "score": 0,
+   "tier": "clean",
+   "verdict": "No statistically significant membership signal on any audited benchmark; consistent with a clean model at current probe sensitivity.",
+   "cells": [
+    {
+     "audit_id": 6,
+     "benchmark": "gsm8k",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.4856952851748372,
+     "p_value": 0.19432861898419143,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 6,
+     "benchmark": "gsm8k",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.501530150389803,
+     "p_value": 0.6720847874721105,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 6,
+     "benchmark": "gsm8k",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.5207907497163637,
+     "p_value": 0.3603226352427271,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 6,
+     "benchmark": "humaneval",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.4871598353783919,
+     "p_value": 0.5558664474199705,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 6,
+     "benchmark": "humaneval",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.5122458042676371,
+     "p_value": 0.8169155539508056,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 6,
+     "benchmark": "humaneval",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.48993973778219174,
+     "p_value": 0.8506413394277632,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 6,
+     "benchmark": "math",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.5411382958317729,
+     "p_value": 0.5136096790979329,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 6,
+     "benchmark": "math",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.4908387914497281,
+     "p_value": 0.6723230269755257,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 6,
+     "benchmark": "math",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.4915908675126541,
+     "p_value": 0.7782118679603827,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 6,
+     "benchmark": "mmlu",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.47458499563318185,
+     "p_value": 0.6317068250857231,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 6,
+     "benchmark": "mmlu",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.5000921712971382,
+     "p_value": 0.8533343078887236,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 6,
+     "benchmark": "mmlu",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.4887775908360707,
+     "p_value": 0.5255979692312492,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 6,
+     "benchmark": "truthfulqa",
+     "phase": "pretrain",
+     "probe_label": "Min-K% Prob",
+     "auc": 0.558759446200102,
+     "p_value": 0.5678116700714476,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 6,
+     "benchmark": "truthfulqa",
+     "phase": "rl",
+     "probe_label": "Self-Critique Entropy",
+     "auc": 0.502200568432938,
+     "p_value": 0.6891416601398855,
+     "signal": 0.0,
+     "error": null
+    },
+    {
+     "audit_id": 6,
+     "benchmark": "truthfulqa",
+     "phase": "sft",
+     "probe_label": "Prob. Variation (SPV-MIA)",
+     "auc": 0.5061910091618126,
+     "p_value": 0.31791300410458423,
+     "signal": 0.0,
+     "error": null
+    }
+   ]
+  }
+ ]
+}

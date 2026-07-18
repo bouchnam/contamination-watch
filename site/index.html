@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contamination Watch — benchmark contamination leaderboard</title>
+<meta name="description" content="Continuous membership-inference audits of new LLM releases against public benchmarks. Powered by benchleak.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ground:#F2F5F7; --panel:#FCFDFE; --ink:#131B26; --slate:#5C6B7A;
+  --line:#D8E0E6; --teal:#178E7B; --amber:#D98D1F; --red:#C3402E;
+  --mono:'IBM Plex Mono',monospace;
+}
+* { box-sizing:border-box; margin:0; }
+body { background:var(--ground); color:var(--ink);
+  font:16px/1.55 'IBM Plex Sans',system-ui,sans-serif; padding:0 20px 80px; }
+.wrap { max-width:1060px; margin:0 auto; }
+.mono { font-family:var(--mono); font-variant-numeric:tabular-nums; }
+.c-teal { color:var(--teal); } .c-amber { color:var(--amber); }
+.c-red { color:var(--red); } .c-slate { color:var(--slate); }
+
+header { padding:52px 0 12px; }
+.statusline { font-family:var(--mono); font-size:12.5px; letter-spacing:.08em;
+  color:var(--slate); border-bottom:1px solid var(--line); padding-bottom:14px; }
+.statusline b { color:var(--teal); font-weight:500; }
+h1 { font-family:'Space Grotesk'; font-weight:700; font-size:clamp(34px,5.5vw,54px);
+  letter-spacing:-.02em; margin:22px 0 8px; }
+h1 .u { color:var(--amber); }
+.sub { color:var(--slate); max-width:62ch; margin-bottom:8px; }
+.sub a { color:var(--teal); }
+
+.legend { display:flex; gap:22px; flex-wrap:wrap; font-family:var(--mono);
+  font-size:12px; color:var(--slate); margin:26px 0 10px; }
+.legend i { display:inline-block; width:3px; height:12px; margin-right:7px;
+  vertical-align:-2px; }
+.axis-label { margin-left:auto; }
+
+.colhead { display:grid; grid-template-columns:44px minmax(220px,1.1fr) minmax(180px,1fr) 128px;
+  gap:18px; padding:8px 16px 6px; font-family:var(--mono); font-size:11px;
+  letter-spacing:.1em; color:var(--slate); text-transform:uppercase; }
+.colhead :nth-child(4) { text-align:right; }
+
+details.row { background:var(--panel); border:1px solid var(--line);
+  border-radius:8px; margin-bottom:10px; }
+details.row[open] { border-color:var(--slate); }
+summary { display:grid; grid-template-columns:44px minmax(220px,1.1fr) minmax(180px,1fr) 128px;
+  gap:18px; align-items:center; padding:14px 16px; cursor:pointer; list-style:none; }
+summary::-webkit-details-marker { display:none; }
+summary:focus-visible { outline:2px solid var(--teal); outline-offset:2px; border-radius:8px; }
+.rank { color:var(--slate); font-size:13px; }
+.model-id { display:block; font-weight:600; font-size:15px; overflow-wrap:anywhere; }
+.audited { display:block; font-family:var(--mono); font-size:11.5px; color:var(--slate); }
+
+.spectrum { position:relative; height:34px; background:
+  linear-gradient(to right, transparent calc(50% - .5px), var(--line) calc(50% - .5px),
+  var(--line) calc(50% + .5px), transparent calc(50% + .5px)),
+  linear-gradient(var(--ground),var(--ground)); border:1px solid var(--line);
+  border-radius:4px; overflow:hidden; }
+.spectrum .tick { position:absolute; top:6px; bottom:6px; width:3px;
+  border-radius:1px; transform:translateX(-1px); }
+.spectrum .axis-mark { position:absolute; bottom:0; width:1px; height:5px;
+  background:var(--slate); opacity:.5; }
+.t-hot { background:var(--red); } .t-warm { background:var(--amber); }
+.t-cold { background:var(--teal); opacity:.55; } .t-na { background:var(--line); }
+td.t-hot { color:var(--red); font-weight:500; } td.t-warm { color:var(--amber); }
+td.t-cold { color:inherit; }
+
+.score-block { text-align:right; }
+.score { font-size:26px; font-weight:500; display:block; line-height:1.1; }
+.tier { font-family:var(--mono); font-size:11px; letter-spacing:.06em; }
+
+.evidence { border-top:1px solid var(--line); padding:16px 18px 20px; }
+.verdict { font-size:14.5px; max-width:78ch; margin-bottom:14px; }
+table.grid { width:100%; border-collapse:collapse; font-size:13.5px; }
+table.grid th { text-align:left; font-family:var(--mono); font-size:11px;
+  letter-spacing:.08em; text-transform:uppercase; color:var(--slate);
+  border-bottom:1px solid var(--line); padding:6px 10px; }
+table.grid td { padding:6px 10px; border-bottom:1px solid var(--line); }
+table.grid td.err { color:var(--slate); font-style:italic; }
+
+footer { margin-top:44px; font-size:13.5px; color:var(--slate); max-width:74ch; }
+footer a { color:var(--teal); }
+@media (max-width:760px) {
+  summary, .colhead { grid-template-columns:30px 1fr 86px; }
+  .spectrum, .colhead :nth-child(3) { display:none; }
+  .score { font-size:21px; }
+}
+@media (prefers-reduced-motion:no-preference) {
+  details.row { transition:border-color .15s ease; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="statusline"><b>●</b> LAST SWEEP 2026-07-17 21:21 UTC · 6 MODELS · 3 PROBES · 5 BENCHMARKS</div>
+  <h1>Contamination<span class="u">Watch</span></h1>
+  <p class="sub">Continuous membership-inference audits of newly released open
+  models against the benchmarks they're scored on. Three probes per model —
+  Min-K% Prob (pre-training), SPV-MIA probabilistic variation (fine-tuning),
+  and self-critique entropy collapse (RL) — powered by
+  <a href="https://pypi.org/project/benchleak/">benchleak</a>.</p>
+</header>
+
+<div class="legend">
+  <span><i class="t-hot"></i>significant (p ≤ .01)</span>
+  <span><i class="t-warm"></i>weak (p ≤ .10)</span>
+  <span><i class="t-cold"></i>no signal</span>
+  <span class="axis-label">spectrum axis: AUC 0.50 → 0.75 → 1.00</span>
+</div>
+
+<div class="colhead"><span>#</span><span>Model</span><span>Membership spectrum</span><span>Score</span></div>
+
+<details class="row">
+  <summary>
+    <span class="rank mono">01</span>
+    <span class="model">
+      <span class="model-id">demo-org/aurora-7b-instruct</span>
+      <span class="audited">audited 2026-07-17</span>
+    </span>
+    <div class="spectrum" aria-hidden="true"><i class="axis-mark" style="left:0"></i><i class="axis-mark" style="left:50%"></i><i class="axis-mark" style="left:100%"></i><i class="tick t-hot" style="left:64.7%" title="gsm8k · Min-K% Prob · AUC 0.824 · p 0.0026"></i><i class="tick t-hot" style="left:63.6%" title="gsm8k · Self-Critique Entropy · AUC 0.818 · p 0.0030"></i><i class="tick t-hot" style="left:53.2%" title="gsm8k · Prob. Variation (SPV-MIA) · AUC 0.766 · p 0.0036"></i><i class="tick t-cold" style="left:0.0%" title="humaneval · Min-K% Prob · AUC 0.490 · p 0.6717"></i><i class="tick t-cold" style="left:0.0%" title="humaneval · Self-Critique Entropy · AUC 0.440 · p 0.6523"></i><i class="tick t-cold" style="left:4.2%" title="humaneval · Prob. Variation (SPV-MIA) · AUC 0.521 · p 0.4056"></i><i class="tick t-hot" style="left:47.5%" title="math · Min-K% Prob · AUC 0.738 · p 0.0058"></i><i class="tick t-hot" style="left:52.9%" title="math · Self-Critique Entropy · AUC 0.764 · p 0.0074"></i><i class="tick t-warm" style="left:49.3%" title="math · Prob. Variation (SPV-MIA) · AUC 0.747 · p 0.0112"></i><i class="tick t-cold" style="left:17.7%" title="mmlu · Min-K% Prob · AUC 0.589 · p 0.4299"></i><i class="tick t-cold" style="left:10.9%" title="mmlu · Self-Critique Entropy · AUC 0.554 · p 0.2082"></i><i class="tick t-cold" style="left:0.0%" title="mmlu · Prob. Variation (SPV-MIA) · AUC 0.492 · p 0.8543"></i><i class="tick t-cold" style="left:1.0%" title="truthfulqa · Min-K% Prob · AUC 0.505 · p 0.2085"></i><i class="tick t-cold" style="left:6.0%" title="truthfulqa · Self-Critique Entropy · AUC 0.530 · p 0.3377"></i><i class="tick t-cold" style="left:2.8%" title="truthfulqa · Prob. Variation (SPV-MIA) · AUC 0.514 · p 0.2921"></i></div>
+    <span class="score-block">
+      <span class="score mono c-red">65</span>
+      <span class="tier c-red">Likely contaminated</span>
+    </span>
+  </summary>
+  <div class="evidence">
+    <p class="verdict">Strong membership signal detected on gsm8k, math; composite contamination score 65/100.</p>
+    <table class="grid"><thead><tr><th>Benchmark</th><th>Probe</th><th>AUC</th><th>p-value</th><th>Signal</th></tr></thead><tbody><tr><td>gsm8k</td><td>Min-K% Prob</td><td class="mono t-hot">0.824</td><td class="mono">0.0026</td><td class="mono">0.91</td></tr><tr><td>gsm8k</td><td>Self-Critique Entropy</td><td class="mono t-hot">0.818</td><td class="mono">0.0030</td><td class="mono">0.89</td></tr><tr><td>gsm8k</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-hot">0.766</td><td class="mono">0.0036</td><td class="mono">0.72</td></tr><tr><td>humaneval</td><td>Min-K% Prob</td><td class="mono t-cold">0.490</td><td class="mono">0.6717</td><td class="mono">0.00</td></tr><tr><td>humaneval</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.440</td><td class="mono">0.6523</td><td class="mono">0.00</td></tr><tr><td>humaneval</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.521</td><td class="mono">0.4056</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Min-K% Prob</td><td class="mono t-hot">0.738</td><td class="mono">0.0058</td><td class="mono">0.63</td></tr><tr><td>math</td><td>Self-Critique Entropy</td><td class="mono t-hot">0.764</td><td class="mono">0.0074</td><td class="mono">0.71</td></tr><tr><td>math</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-warm">0.747</td><td class="mono">0.0112</td><td class="mono">0.63</td></tr><tr><td>mmlu</td><td>Min-K% Prob</td><td class="mono t-cold">0.589</td><td class="mono">0.4299</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.554</td><td class="mono">0.2082</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.492</td><td class="mono">0.8543</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Min-K% Prob</td><td class="mono t-cold">0.505</td><td class="mono">0.2085</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.530</td><td class="mono">0.3377</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.514</td><td class="mono">0.2921</td><td class="mono">0.00</td></tr></tbody></table>
+  </div>
+</details>
+
+<details class="row">
+  <summary>
+    <span class="rank mono">02</span>
+    <span class="model">
+      <span class="model-id">demo-org/basalt-8b-chat</span>
+      <span class="audited">audited 2026-07-17</span>
+    </span>
+    <div class="spectrum" aria-hidden="true"><i class="axis-mark" style="left:0"></i><i class="axis-mark" style="left:50%"></i><i class="axis-mark" style="left:100%"></i><i class="tick t-cold" style="left:4.5%" title="gsm8k · Min-K% Prob · AUC 0.522 · p 0.4006"></i><i class="tick t-cold" style="left:8.7%" title="gsm8k · Self-Critique Entropy · AUC 0.544 · p 0.2303"></i><i class="tick t-cold" style="left:1.7%" title="gsm8k · Prob. Variation (SPV-MIA) · AUC 0.509 · p 0.7254"></i><i class="tick t-hot" style="left:56.2%" title="humaneval · Min-K% Prob · AUC 0.781 · p 0.0043"></i><i class="tick t-hot" style="left:57.3%" title="humaneval · Self-Critique Entropy · AUC 0.787 · p 0.0041"></i><i class="tick t-hot" style="left:57.8%" title="humaneval · Prob. Variation (SPV-MIA) · AUC 0.789 · p 0.0014"></i><i class="tick t-cold" style="left:1.0%" title="math · Min-K% Prob · AUC 0.505 · p 0.7440"></i><i class="tick t-cold" style="left:0.0%" title="math · Self-Critique Entropy · AUC 0.482 · p 0.4691"></i><i class="tick t-cold" style="left:1.8%" title="math · Prob. Variation (SPV-MIA) · AUC 0.509 · p 0.2884"></i><i class="tick t-cold" style="left:5.0%" title="mmlu · Min-K% Prob · AUC 0.525 · p 0.6212"></i><i class="tick t-cold" style="left:6.0%" title="mmlu · Self-Critique Entropy · AUC 0.530 · p 0.8606"></i><i class="tick t-cold" style="left:0.4%" title="mmlu · Prob. Variation (SPV-MIA) · AUC 0.502 · p 0.8365"></i><i class="tick t-cold" style="left:12.4%" title="truthfulqa · Min-K% Prob · AUC 0.562 · p 0.6884"></i><i class="tick t-cold" style="left:0.0%" title="truthfulqa · Self-Critique Entropy · AUC 0.479 · p 0.2904"></i><i class="tick t-cold" style="left:0.0%" title="truthfulqa · Prob. Variation (SPV-MIA) · AUC 0.468 · p 0.8194"></i></div>
+    <span class="score-block">
+      <span class="score mono c-red">57</span>
+      <span class="tier c-red">Likely contaminated</span>
+    </span>
+  </summary>
+  <div class="evidence">
+    <p class="verdict">Strong membership signal detected on humaneval; composite contamination score 57/100.</p>
+    <table class="grid"><thead><tr><th>Benchmark</th><th>Probe</th><th>AUC</th><th>p-value</th><th>Signal</th></tr></thead><tbody><tr><td>gsm8k</td><td>Min-K% Prob</td><td class="mono t-cold">0.522</td><td class="mono">0.4006</td><td class="mono">0.00</td></tr><tr><td>gsm8k</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.544</td><td class="mono">0.2303</td><td class="mono">0.00</td></tr><tr><td>gsm8k</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.509</td><td class="mono">0.7254</td><td class="mono">0.00</td></tr><tr><td>humaneval</td><td>Min-K% Prob</td><td class="mono t-hot">0.781</td><td class="mono">0.0043</td><td class="mono">0.77</td></tr><tr><td>humaneval</td><td>Self-Critique Entropy</td><td class="mono t-hot">0.787</td><td class="mono">0.0041</td><td class="mono">0.79</td></tr><tr><td>humaneval</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-hot">0.789</td><td class="mono">0.0014</td><td class="mono">0.80</td></tr><tr><td>math</td><td>Min-K% Prob</td><td class="mono t-cold">0.505</td><td class="mono">0.7440</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.482</td><td class="mono">0.4691</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.509</td><td class="mono">0.2884</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Min-K% Prob</td><td class="mono t-cold">0.525</td><td class="mono">0.6212</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.530</td><td class="mono">0.8606</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.502</td><td class="mono">0.8365</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Min-K% Prob</td><td class="mono t-cold">0.562</td><td class="mono">0.6884</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.479</td><td class="mono">0.2904</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.468</td><td class="mono">0.8194</td><td class="mono">0.00</td></tr></tbody></table>
+  </div>
+</details>
+
+<details class="row">
+  <summary>
+    <span class="rank mono">03</span>
+    <span class="model">
+      <span class="model-id">demo-org/quill-3b</span>
+      <span class="audited">audited 2026-07-17</span>
+    </span>
+    <div class="spectrum" aria-hidden="true"><i class="axis-mark" style="left:0"></i><i class="axis-mark" style="left:50%"></i><i class="axis-mark" style="left:100%"></i><i class="tick t-cold" style="left:6.3%" title="gsm8k · Min-K% Prob · AUC 0.532 · p 0.3758"></i><i class="tick t-cold" style="left:0.0%" title="gsm8k · Self-Critique Entropy · AUC 0.487 · p 0.6626"></i><i class="tick t-cold" style="left:0.0%" title="gsm8k · Prob. Variation (SPV-MIA) · AUC 0.500 · p 0.5860"></i><i class="tick t-cold" style="left:3.6%" title="humaneval · Min-K% Prob · AUC 0.518 · p 0.3080"></i><i class="tick t-cold" style="left:0.0%" title="humaneval · Self-Critique Entropy · AUC 0.496 · p 0.5380"></i><i class="tick t-cold" style="left:0.0%" title="humaneval · Prob. Variation (SPV-MIA) · AUC 0.472 · p 0.8082"></i><i class="tick t-cold" style="left:5.7%" title="math · Min-K% Prob · AUC 0.528 · p 0.4889"></i><i class="tick t-cold" style="left:0.1%" title="math · Self-Critique Entropy · AUC 0.501 · p 0.4780"></i><i class="tick t-cold" style="left:8.5%" title="math · Prob. Variation (SPV-MIA) · AUC 0.542 · p 0.3814"></i><i class="tick t-hot" style="left:38.9%" title="mmlu · Min-K% Prob · AUC 0.694 · p 0.0078"></i><i class="tick t-warm" style="left:27.7%" title="mmlu · Self-Critique Entropy · AUC 0.638 · p 0.0104"></i><i class="tick t-warm" style="left:28.3%" title="mmlu · Prob. Variation (SPV-MIA) · AUC 0.642 · p 0.0185"></i><i class="tick t-hot" style="left:36.7%" title="truthfulqa · Min-K% Prob · AUC 0.683 · p 0.0086"></i><i class="tick t-hot" style="left:48.1%" title="truthfulqa · Self-Critique Entropy · AUC 0.741 · p 0.0088"></i><i class="tick t-hot" style="left:37.1%" title="truthfulqa · Prob. Variation (SPV-MIA) · AUC 0.686 · p 0.0100"></i></div>
+    <span class="score-block">
+      <span class="score mono c-amber">39</span>
+      <span class="tier c-amber">Suspect</span>
+    </span>
+  </summary>
+  <div class="evidence">
+    <p class="verdict">Moderate membership signal detected on truthfulqa, mmlu; composite contamination score 39/100.</p>
+    <table class="grid"><thead><tr><th>Benchmark</th><th>Probe</th><th>AUC</th><th>p-value</th><th>Signal</th></tr></thead><tbody><tr><td>gsm8k</td><td>Min-K% Prob</td><td class="mono t-cold">0.532</td><td class="mono">0.3758</td><td class="mono">0.00</td></tr><tr><td>gsm8k</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.487</td><td class="mono">0.6626</td><td class="mono">0.00</td></tr><tr><td>gsm8k</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.500</td><td class="mono">0.5860</td><td class="mono">0.00</td></tr><tr><td>humaneval</td><td>Min-K% Prob</td><td class="mono t-cold">0.518</td><td class="mono">0.3080</td><td class="mono">0.00</td></tr><tr><td>humaneval</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.496</td><td class="mono">0.5380</td><td class="mono">0.00</td></tr><tr><td>humaneval</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.472</td><td class="mono">0.8082</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Min-K% Prob</td><td class="mono t-cold">0.528</td><td class="mono">0.4889</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.501</td><td class="mono">0.4780</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.542</td><td class="mono">0.3814</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Min-K% Prob</td><td class="mono t-hot">0.694</td><td class="mono">0.0078</td><td class="mono">0.48</td></tr><tr><td>mmlu</td><td>Self-Critique Entropy</td><td class="mono t-warm">0.638</td><td class="mono">0.0104</td><td class="mono">0.29</td></tr><tr><td>mmlu</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-warm">0.642</td><td class="mono">0.0185</td><td class="mono">0.25</td></tr><tr><td>truthfulqa</td><td>Min-K% Prob</td><td class="mono t-hot">0.683</td><td class="mono">0.0086</td><td class="mono">0.44</td></tr><tr><td>truthfulqa</td><td>Self-Critique Entropy</td><td class="mono t-hot">0.741</td><td class="mono">0.0088</td><td class="mono">0.64</td></tr><tr><td>truthfulqa</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-hot">0.686</td><td class="mono">0.0100</td><td class="mono">0.45</td></tr></tbody></table>
+  </div>
+</details>
+
+<details class="row">
+  <summary>
+    <span class="rank mono">04</span>
+    <span class="model">
+      <span class="model-id">demo-org/cascade-7b-v2</span>
+      <span class="audited">audited 2026-07-17</span>
+    </span>
+    <div class="spectrum" aria-hidden="true"><i class="axis-mark" style="left:0"></i><i class="axis-mark" style="left:50%"></i><i class="axis-mark" style="left:100%"></i><i class="tick t-hot" style="left:33.4%" title="gsm8k · Min-K% Prob · AUC 0.667 · p 0.0100"></i><i class="tick t-hot" style="left:40.8%" title="gsm8k · Self-Critique Entropy · AUC 0.704 · p 0.0061"></i><i class="tick t-hot" style="left:38.8%" title="gsm8k · Prob. Variation (SPV-MIA) · AUC 0.694 · p 0.0081"></i><i class="tick t-cold" style="left:0.0%" title="humaneval · Min-K% Prob · AUC 0.479 · p 0.7767"></i><i class="tick t-cold" style="left:0.0%" title="humaneval · Self-Critique Entropy · AUC 0.487 · p 0.8875"></i><i class="tick t-cold" style="left:0.0%" title="humaneval · Prob. Variation (SPV-MIA) · AUC 0.487 · p 0.3441"></i><i class="tick t-cold" style="left:3.2%" title="math · Min-K% Prob · AUC 0.516 · p 0.3831"></i><i class="tick t-cold" style="left:17.5%" title="math · Self-Critique Entropy · AUC 0.587 · p 0.2976"></i><i class="tick t-cold" style="left:0.0%" title="math · Prob. Variation (SPV-MIA) · AUC 0.499 · p 0.2690"></i><i class="tick t-cold" style="left:0.0%" title="mmlu · Min-K% Prob · AUC 0.500 · p 0.4271"></i><i class="tick t-cold" style="left:0.0%" title="mmlu · Self-Critique Entropy · AUC 0.454 · p 0.7522"></i><i class="tick t-cold" style="left:0.0%" title="mmlu · Prob. Variation (SPV-MIA) · AUC 0.496 · p 0.2057"></i><i class="tick t-cold" style="left:3.5%" title="truthfulqa · Min-K% Prob · AUC 0.518 · p 0.2467"></i><i class="tick t-cold" style="left:17.0%" title="truthfulqa · Self-Critique Entropy · AUC 0.585 · p 0.7374"></i><i class="tick t-cold" style="left:5.6%" title="truthfulqa · Prob. Variation (SPV-MIA) · AUC 0.528 · p 0.2674"></i></div>
+    <span class="score-block">
+      <span class="score mono c-amber">33</span>
+      <span class="tier c-amber">Suspect</span>
+    </span>
+  </summary>
+  <div class="evidence">
+    <p class="verdict">Moderate membership signal detected on gsm8k; composite contamination score 33/100.</p>
+    <table class="grid"><thead><tr><th>Benchmark</th><th>Probe</th><th>AUC</th><th>p-value</th><th>Signal</th></tr></thead><tbody><tr><td>gsm8k</td><td>Min-K% Prob</td><td class="mono t-hot">0.667</td><td class="mono">0.0100</td><td class="mono">0.39</td></tr><tr><td>gsm8k</td><td>Self-Critique Entropy</td><td class="mono t-hot">0.704</td><td class="mono">0.0061</td><td class="mono">0.51</td></tr><tr><td>gsm8k</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-hot">0.694</td><td class="mono">0.0081</td><td class="mono">0.48</td></tr><tr><td>humaneval</td><td>Min-K% Prob</td><td class="mono t-cold">0.479</td><td class="mono">0.7767</td><td class="mono">0.00</td></tr><tr><td>humaneval</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.487</td><td class="mono">0.8875</td><td class="mono">0.00</td></tr><tr><td>humaneval</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.487</td><td class="mono">0.3441</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Min-K% Prob</td><td class="mono t-cold">0.516</td><td class="mono">0.3831</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.587</td><td class="mono">0.2976</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.499</td><td class="mono">0.2690</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Min-K% Prob</td><td class="mono t-cold">0.500</td><td class="mono">0.4271</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.454</td><td class="mono">0.7522</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.496</td><td class="mono">0.2057</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Min-K% Prob</td><td class="mono t-cold">0.518</td><td class="mono">0.2467</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.585</td><td class="mono">0.7374</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.528</td><td class="mono">0.2674</td><td class="mono">0.00</td></tr></tbody></table>
+  </div>
+</details>
+
+<details class="row">
+  <summary>
+    <span class="rank mono">05</span>
+    <span class="model">
+      <span class="model-id">demo-org/lumen-1.5b</span>
+      <span class="audited">audited 2026-07-17</span>
+    </span>
+    <div class="spectrum" aria-hidden="true"><i class="axis-mark" style="left:0"></i><i class="axis-mark" style="left:50%"></i><i class="axis-mark" style="left:100%"></i><i class="tick t-cold" style="left:0.0%" title="gsm8k · Min-K% Prob · AUC 0.486 · p 0.4299"></i><i class="tick t-cold" style="left:0.0%" title="gsm8k · Self-Critique Entropy · AUC 0.489 · p 0.5268"></i><i class="tick t-cold" style="left:1.5%" title="gsm8k · Prob. Variation (SPV-MIA) · AUC 0.508 · p 0.3184"></i><i class="tick t-cold" style="left:11.1%" title="humaneval · Min-K% Prob · AUC 0.555 · p 0.4468"></i><i class="tick t-cold" style="left:0.0%" title="humaneval · Self-Critique Entropy · AUC 0.476 · p 0.2585"></i><i class="tick t-cold" style="left:0.0%" title="humaneval · Prob. Variation (SPV-MIA) · AUC 0.496 · p 0.7447"></i><i class="tick t-cold" style="left:0.0%" title="math · Min-K% Prob · AUC 0.489 · p 0.5607"></i><i class="tick t-cold" style="left:0.0%" title="math · Self-Critique Entropy · AUC 0.500 · p 0.6273"></i><i class="tick t-cold" style="left:5.1%" title="math · Prob. Variation (SPV-MIA) · AUC 0.526 · p 0.4009"></i><i class="tick t-cold" style="left:4.6%" title="mmlu · Min-K% Prob · AUC 0.523 · p 0.7634"></i><i class="tick t-cold" style="left:8.8%" title="mmlu · Self-Critique Entropy · AUC 0.544 · p 0.8214"></i><i class="tick t-cold" style="left:0.0%" title="mmlu · Prob. Variation (SPV-MIA) · AUC 0.483 · p 0.3376"></i><i class="tick t-cold" style="left:0.0%" title="truthfulqa · Min-K% Prob · AUC 0.484 · p 0.3588"></i><i class="tick t-cold" style="left:13.6%" title="truthfulqa · Self-Critique Entropy · AUC 0.568 · p 0.3639"></i><i class="tick t-cold" style="left:1.3%" title="truthfulqa · Prob. Variation (SPV-MIA) · AUC 0.506 · p 0.7447"></i></div>
+    <span class="score-block">
+      <span class="score mono c-teal">0</span>
+      <span class="tier c-teal">Clean</span>
+    </span>
+  </summary>
+  <div class="evidence">
+    <p class="verdict">No statistically significant membership signal on any audited benchmark; consistent with a clean model at current probe sensitivity.</p>
+    <table class="grid"><thead><tr><th>Benchmark</th><th>Probe</th><th>AUC</th><th>p-value</th><th>Signal</th></tr></thead><tbody><tr><td>gsm8k</td><td>Min-K% Prob</td><td class="mono t-cold">0.486</td><td class="mono">0.4299</td><td class="mono">0.00</td></tr><tr><td>gsm8k</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.489</td><td class="mono">0.5268</td><td class="mono">0.00</td></tr><tr><td>gsm8k</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.508</td><td class="mono">0.3184</td><td class="mono">0.00</td></tr><tr><td>humaneval</td><td>Min-K% Prob</td><td class="mono t-cold">0.555</td><td class="mono">0.4468</td><td class="mono">0.00</td></tr><tr><td>humaneval</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.476</td><td class="mono">0.2585</td><td class="mono">0.00</td></tr><tr><td>humaneval</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.496</td><td class="mono">0.7447</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Min-K% Prob</td><td class="mono t-cold">0.489</td><td class="mono">0.5607</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.500</td><td class="mono">0.6273</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.526</td><td class="mono">0.4009</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Min-K% Prob</td><td class="mono t-cold">0.523</td><td class="mono">0.7634</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.544</td><td class="mono">0.8214</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.483</td><td class="mono">0.3376</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Min-K% Prob</td><td class="mono t-cold">0.484</td><td class="mono">0.3588</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.568</td><td class="mono">0.3639</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.506</td><td class="mono">0.7447</td><td class="mono">0.00</td></tr></tbody></table>
+  </div>
+</details>
+
+<details class="row">
+  <summary>
+    <span class="rank mono">06</span>
+    <span class="model">
+      <span class="model-id">demo-org/verity-4b-base</span>
+      <span class="audited">audited 2026-07-17</span>
+    </span>
+    <div class="spectrum" aria-hidden="true"><i class="axis-mark" style="left:0"></i><i class="axis-mark" style="left:50%"></i><i class="axis-mark" style="left:100%"></i><i class="tick t-cold" style="left:0.0%" title="gsm8k · Min-K% Prob · AUC 0.486 · p 0.1943"></i><i class="tick t-cold" style="left:0.3%" title="gsm8k · Self-Critique Entropy · AUC 0.502 · p 0.6721"></i><i class="tick t-cold" style="left:4.2%" title="gsm8k · Prob. Variation (SPV-MIA) · AUC 0.521 · p 0.3603"></i><i class="tick t-cold" style="left:0.0%" title="humaneval · Min-K% Prob · AUC 0.487 · p 0.5559"></i><i class="tick t-cold" style="left:2.4%" title="humaneval · Self-Critique Entropy · AUC 0.512 · p 0.8169"></i><i class="tick t-cold" style="left:0.0%" title="humaneval · Prob. Variation (SPV-MIA) · AUC 0.490 · p 0.8506"></i><i class="tick t-cold" style="left:8.2%" title="math · Min-K% Prob · AUC 0.541 · p 0.5136"></i><i class="tick t-cold" style="left:0.0%" title="math · Self-Critique Entropy · AUC 0.491 · p 0.6723"></i><i class="tick t-cold" style="left:0.0%" title="math · Prob. Variation (SPV-MIA) · AUC 0.492 · p 0.7782"></i><i class="tick t-cold" style="left:0.0%" title="mmlu · Min-K% Prob · AUC 0.475 · p 0.6317"></i><i class="tick t-cold" style="left:0.0%" title="mmlu · Self-Critique Entropy · AUC 0.500 · p 0.8533"></i><i class="tick t-cold" style="left:0.0%" title="mmlu · Prob. Variation (SPV-MIA) · AUC 0.489 · p 0.5256"></i><i class="tick t-cold" style="left:11.8%" title="truthfulqa · Min-K% Prob · AUC 0.559 · p 0.5678"></i><i class="tick t-cold" style="left:0.4%" title="truthfulqa · Self-Critique Entropy · AUC 0.502 · p 0.6891"></i><i class="tick t-cold" style="left:1.2%" title="truthfulqa · Prob. Variation (SPV-MIA) · AUC 0.506 · p 0.3179"></i></div>
+    <span class="score-block">
+      <span class="score mono c-teal">0</span>
+      <span class="tier c-teal">Clean</span>
+    </span>
+  </summary>
+  <div class="evidence">
+    <p class="verdict">No statistically significant membership signal on any audited benchmark; consistent with a clean model at current probe sensitivity.</p>
+    <table class="grid"><thead><tr><th>Benchmark</th><th>Probe</th><th>AUC</th><th>p-value</th><th>Signal</th></tr></thead><tbody><tr><td>gsm8k</td><td>Min-K% Prob</td><td class="mono t-cold">0.486</td><td class="mono">0.1943</td><td class="mono">0.00</td></tr><tr><td>gsm8k</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.502</td><td class="mono">0.6721</td><td class="mono">0.00</td></tr><tr><td>gsm8k</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.521</td><td class="mono">0.3603</td><td class="mono">0.00</td></tr><tr><td>humaneval</td><td>Min-K% Prob</td><td class="mono t-cold">0.487</td><td class="mono">0.5559</td><td class="mono">0.00</td></tr><tr><td>humaneval</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.512</td><td class="mono">0.8169</td><td class="mono">0.00</td></tr><tr><td>humaneval</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.490</td><td class="mono">0.8506</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Min-K% Prob</td><td class="mono t-cold">0.541</td><td class="mono">0.5136</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.491</td><td class="mono">0.6723</td><td class="mono">0.00</td></tr><tr><td>math</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.492</td><td class="mono">0.7782</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Min-K% Prob</td><td class="mono t-cold">0.475</td><td class="mono">0.6317</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.500</td><td class="mono">0.8533</td><td class="mono">0.00</td></tr><tr><td>mmlu</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.489</td><td class="mono">0.5256</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Min-K% Prob</td><td class="mono t-cold">0.559</td><td class="mono">0.5678</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Self-Critique Entropy</td><td class="mono t-cold">0.502</td><td class="mono">0.6891</td><td class="mono">0.00</td></tr><tr><td>truthfulqa</td><td>Prob. Variation (SPV-MIA)</td><td class="mono t-cold">0.506</td><td class="mono">0.3179</td><td class="mono">0.00</td></tr></tbody></table>
+  </div>
+</details>
+
+<footer>
+  <p><strong>Reading the score.</strong> 0–20 clean ·
+  21–50 suspect ·
+  51+ likely contaminated. AUC measures how
+  separable benchmark items are from unseen reference text under each probe;
+  0.5 is chance. A high score is evidence of training-set membership, not
+  proof of intent — deduplication failures and licensing quirks produce the
+  same fingerprint. Full methodology and raw results:
+  <a href="results.json">results.json</a>.</p>
+</footer>
+</div>
+</body>
+</html>
