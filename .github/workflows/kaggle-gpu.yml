@@ -38,7 +38,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install Kaggle CLI
-        run: pip install kaggle
+        run: pip install "kaggle<2"
 
       - name: Prepare kernel
         run: |
