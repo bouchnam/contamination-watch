@@ -1,21 +1,21 @@
 {
- "generated_at": "2026-07-17T21:21:53+00:00",
+ "generated_at": "2026-07-18T11:56:22+00:00",
  "models": [
   {
    "model_id": "demo-org/aurora-7b-instruct",
-   "audited_at": "2026-07-17T21:21:53.856649+00:00",
-   "score": 65,
+   "audited_at": "2026-07-18T11:56:21.907817+00:00",
+   "score": 71,
    "tier": "contaminated",
-   "verdict": "Strong membership signal detected on gsm8k, math; composite contamination score 65/100.",
+   "verdict": "Strong membership signal detected on gsm8k, math; composite contamination score 71/100.",
    "cells": [
     {
      "audit_id": 1,
      "benchmark": "gsm8k",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.8235451198888192,
-     "p_value": 0.0026263134596596115,
-     "signal": 0.911817066296064,
+     "auc": 0.8282420649103309,
+     "p_value": 0.007837272346543054,
+     "signal": 0.9274735497011032,
      "error": null
     },
     {
@@ -23,9 +23,9 @@
      "benchmark": "gsm8k",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.818038516185762,
-     "p_value": 0.0029823853201408463,
-     "signal": 0.8934617206192066,
+     "auc": 0.8322200994642964,
+     "p_value": 0.0038389918651860954,
+     "signal": 0.9407336648809882,
      "error": null
     },
     {
@@ -33,9 +33,9 @@
      "benchmark": "gsm8k",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.7658752073226434,
-     "p_value": 0.0035578995986105997,
-     "signal": 0.7195840244088112,
+     "auc": 0.8005567984511466,
+     "p_value": 0.0064375342325846754,
+     "signal": 0.8351893281704886,
      "error": null
     },
     {
@@ -43,8 +43,8 @@
      "benchmark": "humaneval",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.490435482460724,
-     "p_value": 0.6716854220985855,
+     "auc": 0.49316674348397177,
+     "p_value": 0.8280327423617221,
      "signal": 0.0,
      "error": null
     },
@@ -53,8 +53,8 @@
      "benchmark": "humaneval",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.4404581540767316,
-     "p_value": 0.6522676040912448,
+     "auc": 0.5086433847058134,
+     "p_value": 0.8255291527958776,
      "signal": 0.0,
      "error": null
     },
@@ -63,8 +63,8 @@
      "benchmark": "humaneval",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.5212038269646703,
-     "p_value": 0.4055903783852648,
+     "auc": 0.513749363214486,
+     "p_value": 0.18752595371655476,
      "signal": 0.0,
      "error": null
     },
@@ -73,9 +73,9 @@
      "benchmark": "math",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.7375376387916935,
-     "p_value": 0.005807832621906833,
-     "signal": 0.6251254626389785,
+     "auc": 0.8059230357000404,
+     "p_value": 0.009172823145874854,
+     "signal": 0.8530767856668015,
      "error": null
     },
     {
@@ -83,9 +83,9 @@
      "benchmark": "math",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.7644698222978559,
-     "p_value": 0.007396596095940273,
-     "signal": 0.7148994076595195,
+     "auc": 0.7957527457597151,
+     "p_value": 0.004293170516863918,
+     "signal": 0.8191758191990504,
      "error": null
     },
     {
@@ -93,9 +93,9 @@
      "benchmark": "math",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.7465731288841749,
-     "p_value": 0.011206750094280037,
-     "signal": 0.6320515970458537,
+     "auc": 0.8371714876971987,
+     "p_value": 0.009575725248309378,
+     "signal": 0.9572382923239958,
      "error": null
     },
     {
@@ -103,8 +103,8 @@
      "benchmark": "mmlu",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.5885101565273345,
-     "p_value": 0.4298734140499656,
+     "auc": 0.5128939525812122,
+     "p_value": 0.3006933110725567,
      "signal": 0.0,
      "error": null
     },
@@ -113,9 +113,9 @@
      "benchmark": "mmlu",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.5544848689557632,
-     "p_value": 0.20819127320019862,
-     "signal": 0.0008499318385454332,
+     "auc": 0.48641450927622826,
+     "p_value": 0.8342857695115954,
+     "signal": 0.0,
      "error": null
     },
     {
@@ -123,8 +123,8 @@
      "benchmark": "mmlu",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.4917265634231374,
-     "p_value": 0.8543277667083067,
+     "auc": 0.48076789138828346,
+     "p_value": 0.27673892810966416,
      "signal": 0.0,
      "error": null
     },
@@ -133,8 +133,8 @@
      "benchmark": "truthfulqa",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.5050771012662761,
-     "p_value": 0.20854302357805457,
+     "auc": 0.5039452137436025,
+     "p_value": 0.46050200774508243,
      "signal": 0.0,
      "error": null
     },
@@ -143,8 +143,8 @@
      "benchmark": "truthfulqa",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.5300471307803772,
-     "p_value": 0.3376659882760066,
+     "auc": 0.4827300643902213,
+     "p_value": 0.6538134628184559,
      "signal": 0.0,
      "error": null
     },
@@ -153,8 +153,8 @@
      "benchmark": "truthfulqa",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.5141233178108127,
-     "p_value": 0.29205460093102054,
+     "auc": 0.5577796559892229,
+     "p_value": 0.4282603417666391,
      "signal": 0.0,
      "error": null
     }
@@ -162,18 +162,18 @@
   },
   {
    "model_id": "demo-org/basalt-8b-chat",
-   "audited_at": "2026-07-17T21:21:53.876424+00:00",
-   "score": 57,
+   "audited_at": "2026-07-18T11:56:22.031836+00:00",
+   "score": 65,
    "tier": "contaminated",
-   "verdict": "Strong membership signal detected on humaneval; composite contamination score 57/100.",
+   "verdict": "Strong membership signal detected on humaneval; composite contamination score 65/100.",
    "cells": [
     {
      "audit_id": 3,
      "benchmark": "gsm8k",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.5224484290479122,
-     "p_value": 0.40064044926233233,
+     "auc": 0.46318603041111617,
+     "p_value": 0.17481701957320012,
      "signal": 0.0,
      "error": null
     },
@@ -182,8 +182,8 @@
      "benchmark": "gsm8k",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.543727108679073,
-     "p_value": 0.23034405447203335,
+     "auc": 0.5499961582819664,
+     "p_value": 0.7498393760806955,
      "signal": 0.0,
      "error": null
     },
@@ -192,8 +192,8 @@
      "benchmark": "gsm8k",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.5086767186104838,
-     "p_value": 0.7253673791115409,
+     "auc": 0.523973674059478,
+     "p_value": 0.802551903891189,
      "signal": 0.0,
      "error": null
     },
@@ -202,9 +202,9 @@
      "benchmark": "humaneval",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.7809537205229917,
-     "p_value": 0.004305695600087087,
-     "signal": 0.7698457350766391,
+     "auc": 0.8219476951290086,
+     "p_value": 0.006447978563394489,
+     "signal": 0.9064923170966952,
      "error": null
     },
     {
@@ -212,9 +212,9 @@
      "benchmark": "humaneval",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.786565557498785,
-     "p_value": 0.004100647881589124,
-     "signal": 0.7885518583292833,
+     "auc": 0.8988566076317835,
+     "p_value": 0.0018093794178148737,
+     "signal": 1.0,
      "error": null
     },
     {
@@ -222,9 +222,9 @@
      "benchmark": "humaneval",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.7890654486171472,
-     "p_value": 0.0014420336441910602,
-     "signal": 0.7968848287238242,
+     "auc": 0.7999242142343022,
+     "p_value": 0.002451960355718393,
+     "signal": 0.8330807141143406,
      "error": null
     },
     {
@@ -232,8 +232,8 @@
      "benchmark": "math",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.5051898273188082,
-     "p_value": 0.7440379944606087,
+     "auc": 0.450769359854823,
+     "p_value": 0.5708792288650205,
      "signal": 0.0,
      "error": null
     },
@@ -242,8 +242,8 @@
      "benchmark": "math",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.48239704050358106,
-     "p_value": 0.46911474658813157,
+     "auc": 0.549862425958398,
+     "p_value": 0.26176932508713896,
      "signal": 0.0,
      "error": null
     },
@@ -252,8 +252,8 @@
      "benchmark": "math",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.5089038513071393,
-     "p_value": 0.2883744086513363,
+     "auc": 0.46784740693074134,
+     "p_value": 0.2699320276944396,
      "signal": 0.0,
      "error": null
     },
@@ -262,8 +262,8 @@
      "benchmark": "mmlu",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.525140989811365,
-     "p_value": 0.6211721385852144,
+     "auc": 0.5301478385163718,
+     "p_value": 0.44513816343168744,
      "signal": 0.0,
      "error": null
     },
@@ -272,8 +272,8 @@
      "benchmark": "mmlu",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.5297826434353842,
-     "p_value": 0.8605666215893619,
+     "auc": 0.5503774881011924,
+     "p_value": 0.2656412697267456,
      "signal": 0.0,
      "error": null
     },
@@ -282,8 +282,8 @@
      "benchmark": "mmlu",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.5018007465439056,
-     "p_value": 0.8365122445508972,
+     "auc": 0.5223710563993498,
+     "p_value": 0.18505282382827076,
      "signal": 0.0,
      "error": null
     },
@@ -292,8 +292,8 @@
      "benchmark": "truthfulqa",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.5619320350822862,
-     "p_value": 0.6883728660898106,
+     "auc": 0.5330994315608113,
+     "p_value": 0.3353625166344404,
      "signal": 0.0,
      "error": null
     },
@@ -302,8 +302,8 @@
      "benchmark": "truthfulqa",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.4786564358936175,
-     "p_value": 0.29043721675532197,
+     "auc": 0.5364662917649182,
+     "p_value": 0.5078902662454506,
      "signal": 0.0,
      "error": null
     },
@@ -312,8 +312,8 @@
      "benchmark": "truthfulqa",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.4678086734075347,
-     "p_value": 0.8193511142729175,
+     "auc": 0.5153097770808844,
+     "p_value": 0.4797161908576769,
      "signal": 0.0,
      "error": null
     }
@@ -321,18 +321,18 @@
   },
   {
    "model_id": "demo-org/quill-3b",
-   "audited_at": "2026-07-17T21:21:53.866591+00:00",
-   "score": 39,
+   "audited_at": "2026-07-18T11:56:21.962630+00:00",
+   "score": 37,
    "tier": "suspect",
-   "verdict": "Moderate membership signal detected on truthfulqa, mmlu; composite contamination score 39/100.",
+   "verdict": "Moderate membership signal detected on truthfulqa, mmlu; composite contamination score 37/100.",
    "cells": [
     {
      "audit_id": 2,
      "benchmark": "gsm8k",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.5315881943538513,
-     "p_value": 0.3758007725519288,
+     "auc": 0.5612718649480787,
+     "p_value": 0.3964697481346786,
      "signal": 0.0,
      "error": null
     },
@@ -341,8 +341,8 @@
      "benchmark": "gsm8k",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.4874610296346816,
-     "p_value": 0.6625804444548304,
+     "auc": 0.4768588096526452,
+     "p_value": 0.2147098924224439,
      "signal": 0.0,
      "error": null
     },
@@ -351,8 +351,8 @@
      "benchmark": "gsm8k",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.5001431058720882,
-     "p_value": 0.5860249429021931,
+     "auc": 0.5019754737352145,
+     "p_value": 0.6719239972784562,
      "signal": 0.0,
      "error": null
     },
@@ -361,8 +361,8 @@
      "benchmark": "humaneval",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.5181683563580682,
-     "p_value": 0.3080412028515699,
+     "auc": 0.5066863760834621,
+     "p_value": 0.807367443804868,
      "signal": 0.0,
      "error": null
     },
@@ -371,8 +371,8 @@
      "benchmark": "humaneval",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.49571764192092704,
-     "p_value": 0.5380226398762001,
+     "auc": 0.4941731001566878,
+     "p_value": 0.7022286932556717,
      "signal": 0.0,
      "error": null
     },
@@ -381,8 +381,8 @@
      "benchmark": "humaneval",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.47229139174087237,
-     "p_value": 0.8081726856008008,
+     "auc": 0.4676067136765315,
+     "p_value": 0.29855838668620094,
      "signal": 0.0,
      "error": null
     },
@@ -391,8 +391,8 @@
      "benchmark": "math",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.5284317648884178,
-     "p_value": 0.4889056802627748,
+     "auc": 0.4957273556142669,
+     "p_value": 0.353489337410863,
      "signal": 0.0,
      "error": null
     },
@@ -401,8 +401,8 @@
      "benchmark": "math",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.5005114248963676,
-     "p_value": 0.4780440987084388,
+     "auc": 0.4499819178357643,
+     "p_value": 0.5137205019177244,
      "signal": 0.0,
      "error": null
     },
@@ -411,8 +411,8 @@
      "benchmark": "math",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.542296693727343,
-     "p_value": 0.3813555436909979,
+     "auc": 0.4972875943738653,
+     "p_value": 0.8036145506529053,
      "signal": 0.0,
      "error": null
     },
@@ -421,9 +421,9 @@
      "benchmark": "mmlu",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.6944646225642188,
-     "p_value": 0.007756583586599213,
-     "signal": 0.4815487418807293,
+     "auc": 0.6768988353075553,
+     "p_value": 0.006780507560601392,
+     "signal": 0.4229961176918511,
      "error": null
     },
     {
@@ -431,9 +431,9 @@
      "benchmark": "mmlu",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.6384897440868206,
-     "p_value": 0.010386975884332166,
-     "signal": 0.2914866030391631,
+     "auc": 0.7103860582820793,
+     "p_value": 0.002383776598485174,
+     "signal": 0.5346201942735977,
      "error": null
     },
     {
@@ -441,9 +441,9 @@
      "benchmark": "mmlu",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.6415591442180978,
-     "p_value": 0.018496575315342465,
-     "signal": 0.24688598236675344,
+     "auc": 0.6532749754319223,
+     "p_value": 0.015311084170952682,
+     "signal": 0.29869125273428304,
      "error": null
     },
     {
@@ -451,9 +451,9 @@
      "benchmark": "truthfulqa",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.6834696641974621,
-     "p_value": 0.008560700436761859,
-     "signal": 0.44489888065820704,
+     "auc": 0.7070505891553523,
+     "p_value": 0.00729620151055629,
+     "signal": 0.5235019638511744,
      "error": null
     },
     {
@@ -461,9 +461,9 @@
      "benchmark": "truthfulqa",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.7406709937688273,
-     "p_value": 0.008783587333803198,
-     "signal": 0.6355699792294243,
+     "auc": 0.6841238713674627,
+     "p_value": 0.010892272269147856,
+     "signal": 0.4352085911445225,
      "error": null
     },
     {
@@ -471,28 +471,28 @@
      "benchmark": "truthfulqa",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.6856170231089138,
-     "p_value": 0.009962952278352118,
-     "signal": 0.4520567436963793,
+     "auc": 0.6817542544662812,
+     "p_value": 0.005875382435914059,
+     "signal": 0.4391808482209374,
      "error": null
     }
    ]
   },
   {
    "model_id": "demo-org/cascade-7b-v2",
-   "audited_at": "2026-07-17T21:21:53.900721+00:00",
-   "score": 33,
+   "audited_at": "2026-07-18T11:56:22.170634+00:00",
+   "score": 25,
    "tier": "suspect",
-   "verdict": "Moderate membership signal detected on gsm8k; composite contamination score 33/100.",
+   "verdict": "Moderate membership signal detected on gsm8k; composite contamination score 25/100.",
    "cells": [
     {
      "audit_id": 5,
      "benchmark": "gsm8k",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.6669102187601358,
-     "p_value": 0.009958974336207922,
-     "signal": 0.38970072920045257,
+     "auc": 0.6711389990417927,
+     "p_value": 0.0009050950222395184,
+     "signal": 0.4037966634726424,
      "error": null
     },
     {
@@ -500,9 +500,9 @@
      "benchmark": "gsm8k",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.704130624926874,
-     "p_value": 0.006118244901408978,
-     "signal": 0.5137687497562464,
+     "auc": 0.6642845718012456,
+     "p_value": 0.009029233791566362,
+     "signal": 0.3809485726708185,
      "error": null
     },
     {
@@ -510,9 +510,9 @@
      "benchmark": "gsm8k",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.6941772456657194,
-     "p_value": 0.008122614437976267,
-     "signal": 0.4805908188857312,
+     "auc": 0.6493754074225058,
+     "p_value": 0.01663898709474115,
+     "signal": 0.2788538442501372,
      "error": null
     },
     {
@@ -520,8 +520,8 @@
      "benchmark": "humaneval",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.4793094756650575,
-     "p_value": 0.7767425202545618,
+     "auc": 0.5151611870628662,
+     "p_value": 0.8144706072309084,
      "signal": 0.0,
      "error": null
     },
@@ -530,8 +530,8 @@
      "benchmark": "humaneval",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.48738565078578644,
-     "p_value": 0.8874896391580428,
+     "auc": 0.4538490499886444,
+     "p_value": 0.28268520237293593,
      "signal": 0.0,
      "error": null
     },
@@ -540,8 +540,8 @@
      "benchmark": "humaneval",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.4866403479727477,
-     "p_value": 0.34409264816241936,
+     "auc": 0.5170987605393231,
+     "p_value": 0.741745547165116,
      "signal": 0.0,
      "error": null
     },
@@ -550,8 +550,8 @@
      "benchmark": "math",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.5162061627161437,
-     "p_value": 0.3831122700627708,
+     "auc": 0.5448114744882591,
+     "p_value": 0.3716364499960092,
      "signal": 0.0,
      "error": null
     },
@@ -560,8 +560,8 @@
      "benchmark": "math",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.5873191040706689,
-     "p_value": 0.29759217141489713,
+     "auc": 0.5325728811155228,
+     "p_value": 0.6169549105655608,
      "signal": 0.0,
      "error": null
     },
@@ -570,8 +570,8 @@
      "benchmark": "math",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.49891802965896187,
-     "p_value": 0.26897635717613944,
+     "auc": 0.4858416873181792,
+     "p_value": 0.16123847265212035,
      "signal": 0.0,
      "error": null
     },
@@ -580,8 +580,8 @@
      "benchmark": "mmlu",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.49968539558137853,
-     "p_value": 0.4271278258045631,
+     "auc": 0.5082431486187252,
+     "p_value": 0.20680630689050766,
      "signal": 0.0,
      "error": null
     },
@@ -590,8 +590,8 @@
      "benchmark": "mmlu",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.4540853228897647,
-     "p_value": 0.7522245604087195,
+     "auc": 0.5184005853366979,
+     "p_value": 0.6276593147422952,
      "signal": 0.0,
      "error": null
     },
@@ -600,8 +600,8 @@
      "benchmark": "mmlu",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.495828747587417,
-     "p_value": 0.20572912607496863,
+     "auc": 0.46817156822782996,
+     "p_value": 0.19703897593156802,
      "signal": 0.0,
      "error": null
     },
@@ -610,9 +610,9 @@
      "benchmark": "truthfulqa",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.5176339913840506,
-     "p_value": 0.24672107594033554,
-     "signal": 0.0,
+     "auc": 0.576063749397064,
+     "p_value": 0.2124215992951409,
+     "signal": 0.004396431894083702,
      "error": null
     },
     {
@@ -620,8 +620,8 @@
      "benchmark": "truthfulqa",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.58480641433102,
-     "p_value": 0.737439265162706,
+     "auc": 0.5672098967601783,
+     "p_value": 0.519738372209413,
      "signal": 0.0,
      "error": null
     },
@@ -630,8 +630,8 @@
      "benchmark": "truthfulqa",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.5277939544619594,
-     "p_value": 0.26741114360192053,
+     "auc": 0.5307407546520369,
+     "p_value": 0.4120580329871918,
      "signal": 0.0,
      "error": null
     }
@@ -639,7 +639,7 @@
   },
   {
    "model_id": "demo-org/lumen-1.5b",
-   "audited_at": "2026-07-17T21:21:53.886697+00:00",
+   "audited_at": "2026-07-18T11:56:22.102310+00:00",
    "score": 0,
    "tier": "clean",
    "verdict": "No statistically significant membership signal on any audited benchmark; consistent with a clean model at current probe sensitivity.",
@@ -649,8 +649,8 @@
      "benchmark": "gsm8k",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.48574250139248315,
-     "p_value": 0.42989486109938213,
+     "auc": 0.5284484164174518,
+     "p_value": 0.2569723690763298,
      "signal": 0.0,
      "error": null
     },
@@ -659,8 +659,8 @@
      "benchmark": "gsm8k",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.4894841634760472,
-     "p_value": 0.526796918623167,
+     "auc": 0.4836877191809863,
+     "p_value": 0.6050052076683532,
      "signal": 0.0,
      "error": null
     },
@@ -669,8 +669,8 @@
      "benchmark": "gsm8k",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.507531750099646,
-     "p_value": 0.31835302276780425,
+     "auc": 0.48333983851277496,
+     "p_value": 0.8885237325160752,
      "signal": 0.0,
      "error": null
     },
@@ -679,8 +679,8 @@
      "benchmark": "humaneval",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.5553985138293943,
-     "p_value": 0.44675379194576503,
+     "auc": 0.4904135863407763,
+     "p_value": 0.6672265403213394,
      "signal": 0.0,
      "error": null
     },
@@ -689,8 +689,8 @@
      "benchmark": "humaneval",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.4761546400010047,
-     "p_value": 0.2584897757957892,
+     "auc": 0.5348972454640973,
+     "p_value": 0.15772723155738702,
      "signal": 0.0,
      "error": null
     },
@@ -699,8 +699,8 @@
      "benchmark": "humaneval",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.49629779190294276,
-     "p_value": 0.7447156760294701,
+     "auc": 0.5214851522220727,
+     "p_value": 0.34097890453162855,
      "signal": 0.0,
      "error": null
     },
@@ -709,8 +709,8 @@
      "benchmark": "math",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.48933225640050637,
-     "p_value": 0.5606624015496865,
+     "auc": 0.5035891150242481,
+     "p_value": 0.5939685882504238,
      "signal": 0.0,
      "error": null
     },
@@ -719,8 +719,8 @@
      "benchmark": "math",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.49977873716237176,
-     "p_value": 0.6272504743819556,
+     "auc": 0.5112458387055562,
+     "p_value": 0.22262043834206027,
      "signal": 0.0,
      "error": null
     },
@@ -729,8 +729,8 @@
      "benchmark": "math",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.5256705108306508,
-     "p_value": 0.4009201059444266,
+     "auc": 0.5424885190092026,
+     "p_value": 0.546832387816904,
      "signal": 0.0,
      "error": null
     },
@@ -739,9 +739,9 @@
      "benchmark": "mmlu",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.5230596505542462,
-     "p_value": 0.7633818394886532,
-     "signal": 0.0,
+     "auc": 0.5616721494290681,
+     "p_value": 0.20874994396656804,
+     "signal": 0.0021796083653607364,
      "error": null
     },
     {
@@ -749,8 +749,8 @@
      "benchmark": "mmlu",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.5440293240071079,
-     "p_value": 0.8214226865221359,
+     "auc": 0.4697634681407597,
+     "p_value": 0.8367922177525955,
      "signal": 0.0,
      "error": null
     },
@@ -759,8 +759,8 @@
      "benchmark": "mmlu",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.4825633703243984,
-     "p_value": 0.3375590575329941,
+     "auc": 0.5073187983796617,
+     "p_value": 0.2805778937365156,
      "signal": 0.0,
      "error": null
     },
@@ -769,8 +769,8 @@
      "benchmark": "truthfulqa",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.4839492439362858,
-     "p_value": 0.3588149993165326,
+     "auc": 0.5549076235436419,
+     "p_value": 0.6024054094330602,
      "signal": 0.0,
      "error": null
     },
@@ -779,8 +779,8 @@
      "benchmark": "truthfulqa",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.5682023752267676,
-     "p_value": 0.3639267940062888,
+     "auc": 0.4478514812446574,
+     "p_value": 0.36684668539686555,
      "signal": 0.0,
      "error": null
     },
@@ -789,8 +789,8 @@
      "benchmark": "truthfulqa",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.5063697219240729,
-     "p_value": 0.744711909440887,
+     "auc": 0.45991557034118913,
+     "p_value": 0.46741965584626965,
      "signal": 0.0,
      "error": null
     }
@@ -798,7 +798,7 @@
   },
   {
    "model_id": "demo-org/verity-4b-base",
-   "audited_at": "2026-07-17T21:21:53.911195+00:00",
+   "audited_at": "2026-07-18T11:56:22.234030+00:00",
    "score": 0,
    "tier": "clean",
    "verdict": "No statistically significant membership signal on any audited benchmark; consistent with a clean model at current probe sensitivity.",
@@ -808,8 +808,8 @@
      "benchmark": "gsm8k",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.4856952851748372,
-     "p_value": 0.19432861898419143,
+     "auc": 0.5387259022037675,
+     "p_value": 0.5232442232059529,
      "signal": 0.0,
      "error": null
     },
@@ -818,8 +818,8 @@
      "benchmark": "gsm8k",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.501530150389803,
-     "p_value": 0.6720847874721105,
+     "auc": 0.5127526037858691,
+     "p_value": 0.21867808366368616,
      "signal": 0.0,
      "error": null
     },
@@ -828,8 +828,8 @@
      "benchmark": "gsm8k",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.5207907497163637,
-     "p_value": 0.3603226352427271,
+     "auc": 0.5521289981635149,
+     "p_value": 0.7847318197425884,
      "signal": 0.0,
      "error": null
     },
@@ -838,8 +838,8 @@
      "benchmark": "humaneval",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.4871598353783919,
-     "p_value": 0.5558664474199705,
+     "auc": 0.49056875379655296,
+     "p_value": 0.4449167222910807,
      "signal": 0.0,
      "error": null
     },
@@ -848,8 +848,8 @@
      "benchmark": "humaneval",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.5122458042676371,
-     "p_value": 0.8169155539508056,
+     "auc": 0.5323900890762128,
+     "p_value": 0.4341495104974461,
      "signal": 0.0,
      "error": null
     },
@@ -858,8 +858,8 @@
      "benchmark": "humaneval",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.48993973778219174,
-     "p_value": 0.8506413394277632,
+     "auc": 0.5338582169810164,
+     "p_value": 0.5248062953776791,
      "signal": 0.0,
      "error": null
     },
@@ -868,8 +868,8 @@
      "benchmark": "math",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.5411382958317729,
-     "p_value": 0.5136096790979329,
+     "auc": 0.4904490909789917,
+     "p_value": 0.8202592183563573,
      "signal": 0.0,
      "error": null
     },
@@ -878,8 +878,8 @@
      "benchmark": "math",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.4908387914497281,
-     "p_value": 0.6723230269755257,
+     "auc": 0.47055751754744335,
+     "p_value": 0.6799937219695243,
      "signal": 0.0,
      "error": null
     },
@@ -888,8 +888,8 @@
      "benchmark": "math",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.4915908675126541,
-     "p_value": 0.7782118679603827,
+     "auc": 0.486386214658413,
+     "p_value": 0.6280310278881018,
      "signal": 0.0,
      "error": null
     },
@@ -898,8 +898,8 @@
      "benchmark": "mmlu",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.47458499563318185,
-     "p_value": 0.6317068250857231,
+     "auc": 0.5530749939811261,
+     "p_value": 0.6875142097671866,
      "signal": 0.0,
      "error": null
     },
@@ -908,8 +908,8 @@
      "benchmark": "mmlu",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.5000921712971382,
-     "p_value": 0.8533343078887236,
+     "auc": 0.49066510224134563,
+     "p_value": 0.16906160897680642,
      "signal": 0.0,
      "error": null
     },
@@ -918,8 +918,8 @@
      "benchmark": "mmlu",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.4887775908360707,
-     "p_value": 0.5255979692312492,
+     "auc": 0.5035541844182291,
+     "p_value": 0.69808562662518,
      "signal": 0.0,
      "error": null
     },
@@ -928,8 +928,8 @@
      "benchmark": "truthfulqa",
      "phase": "pretrain",
      "probe_label": "Min-K% Prob",
-     "auc": 0.558759446200102,
-     "p_value": 0.5678116700714476,
+     "auc": 0.4455522319054323,
+     "p_value": 0.49817643987705207,
      "signal": 0.0,
      "error": null
     },
@@ -938,8 +938,8 @@
      "benchmark": "truthfulqa",
      "phase": "rl",
      "probe_label": "Self-Critique Entropy",
-     "auc": 0.502200568432938,
-     "p_value": 0.6891416601398855,
+     "auc": 0.5131952024543162,
+     "p_value": 0.7186443673918589,
      "signal": 0.0,
      "error": null
     },
@@ -948,8 +948,8 @@
      "benchmark": "truthfulqa",
      "phase": "sft",
      "probe_label": "Prob. Variation (SPV-MIA)",
-     "auc": 0.5061910091618126,
-     "p_value": 0.31791300410458423,
+     "auc": 0.5378635854518279,
+     "p_value": 0.5655315826366057,
      "signal": 0.0,
      "error": null
     }

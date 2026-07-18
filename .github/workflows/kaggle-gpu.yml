@@ -1,0 +1,87 @@
+name: kaggle-gpu-sweep
+
+# The free GPU lane: GitHub Actions conducts, Kaggle's free T4 computes.
+# 1. Push the kernel in infra/kaggle/ to Kaggle (runs the sweep on GPU)
+# 2. Poll until it completes (up to ~5h)
+# 3. Download the updated database + results, rebuild the site, commit
+# 4. deploy-pages.yml sees site/ change and redeploys the leaderboard
+
+on:
+  schedule:
+    - cron: "30 3,15 * * *"        # twice daily
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Audit a single model id on GPU (optional)"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kaggle-sweep
+  cancel-in-progress: false
+
+jobs:
+  gpu-sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+      KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+      KERNEL: ${{ secrets.KAGGLE_USERNAME }}/contamination-watch-sweep
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Kaggle CLI
+        run: pip install kaggle
+
+      - name: Prepare kernel
+        run: |
+          sed -i "s/KAGGLE_USERNAME/${KAGGLE_USERNAME}/" infra/kaggle/kernel-metadata.json
+          if [ -n "${{ inputs.model }}" ]; then
+            # Inject one-off model into the kernel environment
+            sed -i 's|os.environ.get("CW_SINGLE_MODEL", "")|os.environ.get("CW_SINGLE_MODEL", "${{ inputs.model }}")|' infra/kaggle/sweep_kernel.py
+          fi
+
+      - name: Launch GPU kernel
+        run: kaggle kernels push -p infra/kaggle
+
+      - name: Wait for completion
+        run: |
+          for i in $(seq 1 150); do
+            sleep 120
+            STATUS=$(kaggle kernels status "$KERNEL" 2>&1 || true)
+            echo "[$i] $STATUS"
+            case "$STATUS" in
+              *complete*) echo "kernel complete"; exit 0 ;;
+              *error*|*cancel*) echo "kernel failed"; exit 1 ;;
+            esac
+          done
+          echo "timed out"; exit 1
+
+      - name: Retrieve results
+        run: |
+          kaggle kernels output "$KERNEL" -p /tmp/kout
+          ls -la /tmp/kout
+          mkdir -p data site
+          cp /tmp/kout/watch.sqlite3 data/watch.sqlite3
+          cp /tmp/kout/results.json site/results.json
+
+      - name: Rebuild site
+        run: |
+          pip install -e . --quiet
+          contamination-watch build
+
+      - name: Commit results
+        run: |
+          git config user.name "contamination-watch[bot]"
+          git config user.email "bot@users.noreply.github.com"
+          git checkout -- infra/kaggle   # discard username/model injection
+          git add data/ site/
+          git diff --cached --quiet || git commit -m "gpu sweep (kaggle): $(date -u +%FT%TZ)"
+          git push

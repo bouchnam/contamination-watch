@@ -44,6 +44,7 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CW_MAX_PARAMS_B: "3"   # CPU lane: small models only; Modal GPU lane covers 7-8B
         run: |
           if [ "${{ inputs.demo }}" = "true" ]; then
             contamination-watch demo
