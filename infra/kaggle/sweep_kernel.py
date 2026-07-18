@@ -1,7 +1,7 @@
 """Contamination Watch — Kaggle GPU kernel.
 
 Pushed by .github/workflows/kaggle-gpu.yml. Runs the sweep on Kaggle's free
-T4, then drops the updated database and results into /kaggle/working, where
+GPU, then drops the updated database and results into /kaggle/working, where
 the workflow picks them up and commits them back to the repo.
 
 The repo is public, so no GitHub credentials ever touch Kaggle. The only
@@ -18,15 +18,29 @@ REPO = "https://github.com/bouchnam/contamination-watch.git"
 WORK = "/kaggle/working/repo"
 OUT = "/kaggle/working"
 
-import torch
-if torch.cuda.is_available() and torch.cuda.get_device_capability(0)[0] < 7:
-    print("Pascal GPU detected — installing Pascal-compatible torch")
-    sh(f"{sys.executable} -m pip install -q torch==2.5.1 "
-        "--index-url https://download.pytorch.org/whl/cu121")
 
 def sh(cmd: str, cwd: str | None = None) -> None:
     print("+", cmd, flush=True)
     subprocess.run(cmd, shell=True, check=True, cwd=cwd)
+
+
+def ensure_pascal_torch() -> None:
+    """Kaggle sometimes allocates a P100 (Pascal, sm_60). Modern torch wheels
+    dropped Pascal kernels -> 'no kernel image' on the first forward pass.
+    Downgrade to the last Pascal-compatible build when that GPU is detected."""
+    try:
+        name = subprocess.run(
+            "nvidia-smi --query-gpu=name --format=csv,noheader",
+            shell=True, capture_output=True, text=True, timeout=30,
+        ).stdout.strip()
+    except Exception as exc:
+        print("GPU detection failed:", exc)
+        return
+    print("GPU:", name or "none detected")
+    if "P100" in name:
+        print("Pascal GPU detected — installing Pascal-compatible torch")
+        sh(f"{sys.executable} -m pip install -q torch==2.5.1 "
+           "--index-url https://download.pytorch.org/whl/cu121")
 
 
 def main() -> None:
@@ -35,6 +49,8 @@ def main() -> None:
 
     sh(f"git clone --depth 1 {REPO} {WORK}")
     sh(f"{sys.executable} -m pip install -q -e {WORK}")
+
+    ensure_pascal_torch()
 
     # Optional HF token for gated models, via Kaggle account secrets.
     try:
@@ -50,7 +66,6 @@ def main() -> None:
     os.environ["CW_MAX_PARAMS_B"] = "9"
 
     model = os.environ.get("CW_SINGLE_MODEL", "").strip()
-    # T4 has no bfloat16 support -> float16.
     cmd = (f'contamination-watch audit "{model}" --dtype float16 --device cuda'
            if model else
            "contamination-watch sweep --dtype float16 --device cuda")
