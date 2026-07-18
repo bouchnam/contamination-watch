@@ -18,6 +18,11 @@ REPO = "https://github.com/bouchnam/contamination-watch.git"
 WORK = "/kaggle/working/repo"
 OUT = "/kaggle/working"
 
+import torch
+if torch.cuda.is_available() and torch.cuda.get_device_capability(0)[0] < 7:
+    print("Pascal GPU detected — installing Pascal-compatible torch")
+    sh(f"{sys.executable} -m pip install -q torch==2.5.1 "
+        "--index-url https://download.pytorch.org/whl/cu121")
 
 def sh(cmd: str, cwd: str | None = None) -> None:
     print("+", cmd, flush=True)

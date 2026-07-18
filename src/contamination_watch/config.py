@@ -26,7 +26,8 @@ class BenchmarkTarget:
 
 BENCHMARKS: tuple[BenchmarkTarget, ...] = (
     BenchmarkTarget("gsm8k"),
-    BenchmarkTarget("math"),
+    BenchmarkTarget("HuggingFaceH4/MATH-500", split="test",
+                    fields=("problem", "solution"), limit=150),
     BenchmarkTarget("truthfulqa"),
     BenchmarkTarget("mmlu", limit=200),
     BenchmarkTarget("humaneval", limit=120),
