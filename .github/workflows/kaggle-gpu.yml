@@ -28,7 +28,7 @@ jobs:
     timeout-minutes: 350
     env:
       KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-      KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
       KERNEL: ${{ secrets.KAGGLE_USERNAME }}/contamination-watch-sweep
     steps:
       - uses: actions/checkout@v4
@@ -38,7 +38,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install Kaggle CLI
-        run: pip install "kaggle<2"
+        run: pip install -U kaggle
 
       - name: Prepare kernel
         run: |
