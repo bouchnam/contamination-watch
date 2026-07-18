@@ -41,6 +41,9 @@ def ensure_pascal_torch() -> None:
         print("Pascal GPU detected — installing Pascal-compatible torch")
         sh(f"{sys.executable} -m pip install -q torch==2.5.1 "
            "--index-url https://download.pytorch.org/whl/cu121")
+        # Container's torchvision/torchaudio are built for the newer torch and
+        # break transformers' imports; text-only audits don't need them.
+        sh(f"{sys.executable} -m pip uninstall -q -y torchvision torchaudio")
 
 
 def main() -> None:
