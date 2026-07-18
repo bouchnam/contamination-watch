@@ -66,10 +66,11 @@ def discover(token: str | None = None, filt: WatchFilter = WATCH) -> list[str]:
     def small_enough(mid: str) -> bool:
         est = _estimate_params_b(mid, None)
         return est is None or est <= max_params
+    max_new = int(os.environ.get("CW_MAX_NEW", filt.max_new_per_sweep))
     queue: list[str] = [m for m in filt.priority_models
-                        if m not in already and small_enough(m)]
+                        if m not in already and small_enough(m)][:max_new]
     for mid in fresh:
-        if len(queue) >= filt.max_new_per_sweep:
+        if len(queue) >= max_new:
             break
         if mid not in already and mid not in queue:
             queue.append(mid)

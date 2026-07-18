@@ -41,7 +41,11 @@ contamination-watch build              # re-render site from stored results
 2. Add secrets: `HF_TOKEN` (gated models), `ANTHROPIC_API_KEY` (optional, for verdicts).
 3. Done. `.github/workflows/watch.yml` sweeps every 6 hours, commits results, and deploys the leaderboard to Pages. Trigger a one-off audit of any model from the Actions tab (`workflow_dispatch` → model id).
 
-The default `ubuntu-latest` runner realistically handles models up to ~3B on CPU within the timeout; point `runs-on` at a self-hosted GPU box (or a scheduled Modal/RunPod job calling `contamination-watch sweep`) to cover 7–8B flagships. All limits live in `config.py`.
+**Two compute lanes, both free:**
+- **CPU lane** (`watch.yml`) — GitHub Actions, models ≤3B, every 6h.
+- **GPU lane** (`kaggle-gpu.yml`) — GitHub Actions conducts Kaggle's free T4 (30 GPU-h/week, no card): pushes `infra/kaggle/` as a private kernel, polls, retrieves results, commits. Covers 7–8B flagships, 2 per session, twice daily. Needs `KAGGLE_USERNAME` + `KAGGLE_KEY` repo secrets (kaggle.com → Settings → API → Create New Token). Optional: attach an `HF_TOKEN` secret to the kernel on Kaggle (Add-ons → Secrets) for gated models like Llama.
+
+An alternative Modal lane (`infra/modal_sweep.py`, ~25 GPU-h/month, requires a card on file) is included but optional. All limits live in `config.py`; per-lane budgets via `CW_MAX_PARAMS_B` / `CW_MAX_NEW` env vars.
 
 ## Honest caveats
 
