@@ -31,6 +31,11 @@ def discover(token: str | None = None, filt: WatchFilter = WATCH) -> list[str]:
     from huggingface_hub import HfApi  # imported lazily: not needed in demo mode
 
     api = HfApi(token=token)
+    # Lane-specific size cap: the CPU lane (GitHub Actions) sets
+    # CW_MAX_PARAMS_B=3 so it only picks up small models, leaving 7-8B
+    # flagships to the Modal GPU lane.
+    import os
+    max_params = float(os.environ.get("CW_MAX_PARAMS_B", filt.max_params_b))
     cutoff = dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=filt.lookback_days)
 
     candidates: list[tuple[str, int]] = []
@@ -49,7 +54,7 @@ def discover(token: str | None = None, filt: WatchFilter = WATCH) -> list[str]:
                 continue
             st = getattr(m, "safetensors", None)
             params = _estimate_params_b(mid, getattr(st, "total", None) if st else None)
-            if params is not None and params > filt.max_params_b:
+            if params is not None and params > max_params:
                 continue
             candidates.append((mid, downloads))
 
@@ -58,7 +63,11 @@ def discover(token: str | None = None, filt: WatchFilter = WATCH) -> list[str]:
     fresh = [mid for mid, _ in candidates]
 
     already = store.audited_model_ids()
-    queue: list[str] = [m for m in filt.priority_models if m not in already]
+    def small_enough(mid: str) -> bool:
+        est = _estimate_params_b(mid, None)
+        return est is None or est <= max_params
+    queue: list[str] = [m for m in filt.priority_models
+                        if m not in already and small_enough(m)]
     for mid in fresh:
         if len(queue) >= filt.max_new_per_sweep:
             break
