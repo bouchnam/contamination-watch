@@ -1,19 +1,23 @@
 name: kaggle-gpu-sweep
 
-# The free GPU lane: GitHub Actions conducts, Kaggle's free T4 computes.
-# 1. Push the kernel in infra/kaggle/ to Kaggle (runs the sweep on GPU)
-# 2. Poll until it completes (up to ~5h)
-# 3. Download the updated database + results, rebuild the site, commit
-# 4. deploy-pages.yml sees site/ change and redeploys the leaderboard
+# The free GPU lane: GitHub Actions conducts, Kaggle's free GPU computes.
+# Modes:
+#   (scheduled / default)  push kernel -> poll -> retrieve -> commit
+#   mode=retrieve          skip the GPU run; just fetch the latest kernel
+#                          output and commit it (recovery / re-publish)
 
 on:
   schedule:
-    - cron: "30 3,15 * * *"        # twice daily
+    - cron: "0 4 */3 * *"          # every 3 days at 04:00 UTC
   workflow_dispatch:
     inputs:
       model:
         description: "Audit a single model id on GPU (optional)"
         required: false
+      mode:
+        description: "sweep (default) or retrieve (skip GPU, fetch last results)"
+        required: false
+        default: "sweep"
 
 permissions:
   contents: write
@@ -41,23 +45,26 @@ jobs:
         run: pip install -U kaggle
 
       - name: Prepare kernel
+        if: ${{ inputs.mode != 'retrieve' }}
         run: |
           sed -i "s/KAGGLE_USERNAME/${KAGGLE_USERNAME}/" infra/kaggle/kernel-metadata.json
           if [ -n "${{ inputs.model }}" ]; then
-            # Inject one-off model into the kernel environment
             sed -i 's|os.environ.get("CW_SINGLE_MODEL", "")|os.environ.get("CW_SINGLE_MODEL", "${{ inputs.model }}")|' infra/kaggle/sweep_kernel.py
           fi
 
       - name: Launch GPU kernel
+        if: ${{ inputs.mode != 'retrieve' }}
         run: kaggle kernels push -p infra/kaggle
 
       - name: Wait for completion
+        if: ${{ inputs.mode != 'retrieve' }}
         run: |
-          for i in $(seq 1 150); do
+          for i in $(seq 1 160); do
             sleep 120
             STATUS=$(kaggle kernels status "$KERNEL" 2>&1 || true)
+            S=$(echo "$STATUS" | tr '[:upper:]' '[:lower:]')
             echo "[$i] $STATUS"
-            case "$STATUS" in
+            case "$S" in
               *complete*) echo "kernel complete"; exit 0 ;;
               *error*|*cancel*) echo "kernel failed"; exit 1 ;;
             esac
@@ -68,6 +75,7 @@ jobs:
         run: |
           kaggle kernels output "$KERNEL" -p /tmp/kout
           ls -la /tmp/kout
+          test -f /tmp/kout/watch.sqlite3 || { echo "no results in kernel output"; exit 1; }
           mkdir -p data site
           cp /tmp/kout/watch.sqlite3 data/watch.sqlite3
           cp /tmp/kout/results.json site/results.json
@@ -81,7 +89,7 @@ jobs:
         run: |
           git config user.name "contamination-watch[bot]"
           git config user.email "bot@users.noreply.github.com"
-          git checkout -- infra/kaggle   # discard username/model injection
+          git checkout -- infra/kaggle
           git add data/ site/
           git diff --cached --quiet || git commit -m "gpu sweep (kaggle): $(date -u +%FT%TZ)"
           git push
